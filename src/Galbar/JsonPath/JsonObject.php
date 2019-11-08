@@ -367,6 +367,75 @@ class JsonObject
     }
 
     /**
+     * Append a new value to all json objects/arrays that match
+     * the $jsonPath path to the beginning. If $field is not null, the new value
+     * will be added with $field as key (this will transform
+     * json arrays into objects). This method returns $this to
+     * enable fluent interface.
+     *
+     * @param string $jsonPath jsonPath
+     * @param mixed $value value
+     * @param string $field field
+     *
+     * @return JsonObject
+     */
+    public function unshift($jsonPath, $value, $field=null)
+    {
+        $result = $this->getReal($this->jsonObject, $jsonPath, true);
+        foreach ($result as &$element) {
+            if (is_array($element)) {
+                if ($field == null) {
+                    array_unshift($element,$value);
+                }
+                else {
+                    $element[$field] = $value;
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Remove duplicates from json array
+     * the $jsonPath path to the beginning. This method returns $this to
+     * enable fluent interface.
+     *
+     * @param string $jsonPath jsonPath
+     *
+     * @return JsonObject
+     */
+    public function unique($jsonPath)
+    {
+        $result = $this->getReal($this->jsonObject, $jsonPath, true);
+        foreach ($result as &$element) {
+            if (is_array($element)) {
+                $element = array_map("unserialize", array_unique(array_map("serialize", $element)));
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Reverse json array
+     * the $jsonPath path to the beginning. This method returns $this to
+     * enable fluent interface.
+     *
+     * @param string $jsonPath jsonPath
+     *
+     * @return JsonObject
+     */
+    public function reverse($jsonPath)
+    {
+        $result = $this->getReal($this->jsonObject, $jsonPath, true);
+        foreach ($result as &$element) {
+            if (is_array($element)) {
+                $element = array_reverse($element);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Remove $field from json objects/arrays that match
      * $jsonPath path. This method returns $this to enable
      * fluent interface.
