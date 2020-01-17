@@ -770,14 +770,14 @@ class JsonObject
                             if(is_array($item)){
                                 array_push($newSelection,count($item));
                             }else{
-                                array_push($newSelection,mb_strlen($item));
+                                array_push($newSelection,mb_strlen($item, 'UTF-8'));
                             }
                         }
                     }elseif(count($selection) == 1){
                         if(is_array($selection[0])){
                             $newSelection = count($selection[0]);
                         }else{
-                            $newSelection = mb_strlen($selection[0]);
+                            $newSelection = mb_strlen($selection[0], 'UTF-8');
                         }
                     }
                 }
