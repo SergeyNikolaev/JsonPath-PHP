@@ -467,7 +467,7 @@ class JsonObject
         } else if (is_numeric($expression)) {
             return floatval($expression);
         } else if (preg_match(self::RE_STRING, $expression)) {
-            return substr($expression, 1, strlen($expression) - 2);
+            return substr($expression, 1, mb_strlen($expression,'UTF-8') - 2);
         } else if (preg_match(self::RE_REGEX_EXPR, $expression)) {
             return $expression;
         } else {
@@ -490,7 +490,7 @@ class JsonObject
                         return (float) count($result[0]);
                     }
                     if (is_string($result[0])) {
-                        return (float) strlen($result[0]);
+                        return (float) mb_strlen($result[0],'UTF-8');
                     }
                     return false;
                 }
@@ -631,7 +631,7 @@ class JsonObject
     {
         if (is_array($jsonObject)) {
             $match = array();
-            $contentsLen = strlen($contents);
+            $contentsLen = mb_strlen($contents,'UTF-8');
             if ($contents === self::TOK_ALL) {
                 $this->hasDiverged = true;
                 foreach ($jsonObject as $key => $item) {
@@ -753,7 +753,7 @@ class JsonObject
         $rootObjectPrev = &$this->jsonObject;
         $this->jsonObject = &$jsonObject;
         $selection = array(&$jsonObject);
-        while (strlen($jsonPath) > 0 and count($selection) > 0) {
+        while (mb_strlen($jsonPath,'UTF-8') > 0 and count($selection) > 0) {
             $newSelection = array();
             if (preg_match(self::RE_CHILD_NAME, $jsonPath, $match)) {
                 foreach ($selection as &$jsonObject) {
